@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Date from './date'
+import PostSummary from "./postSummary";
 
 type Props = {
     post: {
@@ -10,7 +11,8 @@ type Props = {
         isoDate: string,
         creator: string | null,
         content: string,
-        'content:encoded': string
+        'content:encoded': string,
+        summary: string
     }
 }
 
@@ -35,6 +37,7 @@ export default function PostContent({ post }: Props) {
             <div className="mb-6 text-base">
                 Posted On <Date dateString={post.isoDate} /> {post.creator && `| From ${post.creator}`}
             </div>
+            {post.summary && <PostSummary summary={post.summary}></PostSummary>}
             <div
                 dangerouslySetInnerHTML={{ __html: post['content:encoded'] ? post['content:encoded'] : post.content }}
             />
