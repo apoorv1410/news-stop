@@ -13,7 +13,7 @@ type Props = {
     renderContent: boolean
 }
 
-export default function Container({ post, renderContent }: Props) {
+export const PostCard = ({ post, renderContent }: Props) => {
     return <Link
                 key={post.link}
                 className={`bg-yellow-100 block my-4 p-4 border border-gray-200 hover:border-gray-500 rounded-lg cursor-pointer`}
@@ -27,3 +27,5 @@ export default function Container({ post, renderContent }: Props) {
                 {renderContent && <div dangerouslySetInnerHTML={{ __html: post.content}}></div>}
         </Link>;
 }
+
+export default PostCard
