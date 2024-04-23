@@ -56,6 +56,8 @@ export const getFeed = cache(async (feedUrl: string, feedSlug: string) => {
     // add url to each feed item
     feed.items.forEach(async (item, index) => {
         item.itemURL = '/' + feedSlug + '/' + convertHeadingToUrl((item.title || ''));
+        item.postSlug = convertHeadingToUrl((item.title || ''));
+        item.feedSlug = feedSlug
 
         // check if current post item should be processed with huggingface summarization feature.
         // This is to save tokens on limited access plans
@@ -75,24 +77,24 @@ export const getFeed = cache(async (feedUrl: string, feedSlug: string) => {
         // To-Do: enable the text-to-speech feature
         // item.audioSource = isCurrentItemValidForHFTTS ? await getTextToSpeech(item.title || '') : '';
     })
-    return feed;
+    return feed.items;
 })
 
 // function to get all feed posts from all feed sources
 // param: none
-// returns: urls (array)
+// returns: posts (array)
 export const getAllPosts = cache(async () => {
     let posts: Array<any> = [];
 
-    // loop through each feed source and push each feed post url to urls array
-    FEEDS.forEach(async (feed) => {
-        const feedData = await getFeed(feed.url, feed.slug);
-    
-        // add url of each feed item to urls array
-        (feedData.items).forEach((item) => {
-            posts.push(item);
-        })
-    })
+    // loop through each feed source and save posts array of each feed in posts
+    posts = await Promise.all(FEEDS.map(async (currentFeed) => {
+        const currentFeedData = await getFeed(currentFeed.url, currentFeed.slug);
+        const feedPosts = currentFeedData.map((feed) => ({ feedSlug: feed.feedSlug || '', postSlug: feed.postSlug || ''}))
+        return feedPosts
+    }))
+
+    // merge the internal posts arrays from different feeds into single posts array
+    posts = posts.flat()
     return posts;
 })
 

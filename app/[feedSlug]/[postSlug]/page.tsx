@@ -6,12 +6,15 @@ import { notFound } from 'next/navigation'
 export const revalidate = 60 // revalidate all feed data every minute
 
 // getStaticPaths is required in dynamic routes in SSG pages to generate them during build time
+// get list of post paths
 export const generateStaticParams = async () => {
-  const posts = await getAllPosts();
-
-  return posts;
-};
-
+    const posts  = await getAllPosts();
+    return posts.map((post) => ({
+        postSlug: post.postSlug,
+        feedSlug: post.feedSlug
+    }))
+}
+  
 type Params = {
     params: {
         feedSlug: string,
@@ -37,8 +40,8 @@ export default async function Post ({ params }: Params) {
     }
     const detailedFeed = await getFeed(feed.url, feed.slug);
     const fullSlug = "/" + params.feedSlug + "/" + params.postSlug;
-    const currentPost: any = detailedFeed.items.find(item => item.itemURL === fullSlug);
-    const otherPostsFromSameFeed: any = detailedFeed.items.filter((item) => item.itemURL !== fullSlug) || [];
+    const currentPost: any = detailedFeed.find(item => item.itemURL === fullSlug);
+    const otherPostsFromSameFeed: any = detailedFeed.filter((item) => item.itemURL !== fullSlug) || [];
 
   return (
       <div className="max-w-2xl mx-auto px-4">
