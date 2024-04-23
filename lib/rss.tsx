@@ -1,6 +1,6 @@
 import Parser from "rss-parser";
 import { cache } from 'react'
-import { summarization } from "@huggingface/inference";
+import { summarization, textToSpeech } from "@huggingface/inference";
 
 export const revalidate = 60 // revalidate all feed data every minute
 
@@ -52,20 +52,28 @@ export const getFeed = cache(async (feedUrl: string, feedSlug: string) => {
     let parser = new Parser();
 
     let feed = await parser.parseURL(feedUrl);
-    const currentFeed = FEEDS.find(current => current.url === feedUrl)
 
     // add url to each feed item
     feed.items.forEach(async (item, index) => {
         item.itemURL = '/' + feedSlug + '/' + convertHeadingToUrl((item.title || ''));
 
-        // check if current post item should be processed with huggingface generative AI features.
+        // check if current post item should be processed with huggingface summarization feature.
         // This is to save tokens on limited access plans
         // Conditons:
         // post is being rendered in production environment AND
         // current post item is in top HF_LIMIT count AND
         // current post has more than HF_SUMMARY_MIN_FULL_TEXT_WORD_SIZE content words to be summarized
-        const isCurrentItemValidForHF = process.env.NODE_ENV === 'production' && index < (parseInt(process.env.HF_LIMIT!) || 5) && getWordCount(item.content!) > (parseInt(process.env.HF_SUMMARY_MIN_FULL_TEXT_WORD_SIZE!) || 100)
-        item.summary = isCurrentItemValidForHF ? await getTextSummary(item.content || ''): '';
+        const isCurrentItemValidForHFSummary = process.env.NODE_ENV === 'production' && index < (parseInt(process.env.HF_LIMIT!) || 5) && getWordCount(item.content!) > (parseInt(process.env.HF_SUMMARY_MIN_FULL_TEXT_WORD_SIZE!) || 100)
+        item.summary = isCurrentItemValidForHFSummary ? await getTextSummary(item.content || ''): '';
+
+        // check if current post item should be processed with huggingface text-to-speech feature.
+        // This is to save tokens on limited access plans
+        // Conditons:
+        // post is being rendered in production environment AND
+        // current post item is in top HF_LIMIT count
+        const isCurrentItemValidForHFTTS = process.env.NODE_ENV === 'production' && index < (parseInt(process.env.HF_LIMIT!) || 5);
+        // To-Do: enable the text-to-speech feature
+        // item.audioSource = isCurrentItemValidForHFTTS ? await getTextToSpeech(item.title || '') : '';
     })
     return feed;
 })
@@ -110,4 +118,26 @@ const getTextSummary = async (text: string) => {
         }
     })
     return summaryObject.summary_text || ''
+}
+
+// function to convert text to speech
+// param: text(string)
+// returns: url (string)
+export const getTextToSpeech = async (text: string) => {
+    // return empty string if text is missing
+    if (!text) {
+        return ''
+    }
+    // generate audio from text with valid huggingface params from env
+    // HF_TEXT_TO_SPEECH_MODEL: full name of the huggingface modal being used for text-to-speech. (like 'facebook/fastspeech2-en-ljspeech')
+    // HF_ACCESS_TOKEN: access token linked to the hugging face account
+    const speechResponse = await textToSpeech({
+        model: process.env.HF_TEXT_TO_SPEECH_MODEL,
+        inputs: text,
+        accessToken: process.env.HF_ACCESS_TOKEN
+    })
+
+    // convert the speech response into valid audio source url
+    const audioUrl = URL.createObjectURL(speechResponse)
+    return audioUrl;
 }
