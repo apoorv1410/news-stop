@@ -32,8 +32,8 @@ export default async function Feed ({ params }: Params) {
   const posts: any = detailedFeed.items
   return (
     <>
-      <div className="px-6 py-12 max-w-2xl mx-auto">
-          <h1 className="font-bold text-2xl mb-12">{feed.title}</h1>
+      <div className="px-4 py-1 max-w-2xl mx-auto">
+          <h1 className="font-bold text-3xl mb-4">{feed.title}</h1>
           <div className="space-y-4">
             {
               posts.map((item: Item, index: number)  => (

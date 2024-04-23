@@ -32,8 +32,8 @@ export default function PostContent({ post }: Props) {
             <div className="text-3xl font-bold">
                 {post.title}
             </div>
-            <div className="mb-6 text-lg">
-                Posted On <Date dateString={post.isoDate} /> | From {post.creator}
+            <div className="mb-6 text-base">
+                Posted On <Date dateString={post.isoDate} /> {post.creator && `| From ${post.creator}`}
             </div>
             <div
                 dangerouslySetInnerHTML={{ __html: post['content:encoded'] ? post['content:encoded'] : post.content }}
