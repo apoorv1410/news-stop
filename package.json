@@ -3,15 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "PORT=5000 next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "PORT=5000 next start",
     "lint": "next lint"
   },
   "dependencies": {
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.2"
+    "next": "14.2.2",
+    "date-fns": "^3.6.0",
+    "rss-parser": "^3.13.0"
   },
   "devDependencies": {
     "typescript": "^5",

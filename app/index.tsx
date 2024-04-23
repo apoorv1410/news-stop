@@ -1,17 +1,8 @@
 import { FEEDS } from "../lib/rss";
 import Link from "next/link";
-import "../styles/globals.css";
 
-type Props = {
-  Component: any,
-  pageProps: any
-}
-
-export const revalidate = 60 // revalidate all feed data every minute
-
-export default function NewsStop () {
-  return (
-    <div>
+export default function Home() {
+    return (
         <div className="px-6 py-12 max-w-2xl mx-auto">
             <h1 className="font-bold text-5xl mb-12">News Stop</h1>
             <h1 className="text-2xl mb-12">Your one stop for news around the world 🌎</h1>
@@ -25,6 +16,5 @@ export default function NewsStop () {
                 }
             </div>
         </div>
-    </div>
   );
 }
