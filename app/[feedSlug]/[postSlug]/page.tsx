@@ -1,6 +1,7 @@
 import { getAllPosts, FEEDS, getFeed } from '../../../lib/rss'
 import PostContent from "../../../components/postContent";
 import PostCard from "../../../components/postCard";
+import { notFound } from 'next/navigation'
 
 export const revalidate = 60 // revalidate all feed data every minute
 
@@ -28,7 +29,12 @@ type Item = {
 }
 
 export default async function Post ({ params }: Params) {
-    const feed = FEEDS.find((feed) => feed.slug === params.feedSlug) || { url: '/', slug: '', title: '', renderContent: false};
+    const feed = FEEDS.find((feed) => feed.slug === params.feedSlug) || { url: '/not-found', slug: '', title: '', renderContent: false};
+
+    // handle invalid feed post page
+    if (feed.url === '/not-found') {
+        return notFound();
+    }
     const detailedFeed = await getFeed(feed.url, feed.slug);
     const fullSlug = "/" + params.feedSlug + "/" + params.postSlug;
     const currentPost: any = detailedFeed.items.find(item => item.itemURL === fullSlug);
@@ -36,7 +42,7 @@ export default async function Post ({ params }: Params) {
 
   return (
       <div className="max-w-2xl mx-auto px-4">
-          <PostContent post={currentPost}></PostContent>
+          {currentPost && <PostContent post={currentPost}></PostContent>}
           <div className="text-2xl font-bold">More from {feed.title}</div>
           {
               otherPostsFromSameFeed.map((post: Item, index: number) => {
