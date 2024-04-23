@@ -1,11 +1,12 @@
 import Link from "next/link";
+import AppBar from '@mui/material/AppBar';
 
 export default function Navbar() {
     return (
-        <nav className="fixed  w-full top-0 left-0 p-6">
-            <Link className="font-bold" href="/">
+        <AppBar position="fixed" enableColorOnDark={false} className="p-4 bg-yellow-100">
+            <Link className="font-bold text-black" href="/">
                 Home
             </Link>
-        </nav>
+        </AppBar>
     )
 }
