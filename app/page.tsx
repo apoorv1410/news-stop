@@ -1,4 +1,4 @@
-import { FEEDS } from "../lib/rss";
+import { FEEDS } from "../lib/constants";
 import Link from "next/link";
 import "../styles/globals.css";
 

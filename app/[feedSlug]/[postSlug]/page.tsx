@@ -1,7 +1,9 @@
-import { getAllPosts, FEEDS, getFeed } from '../../../lib/rss'
+import { getAllPosts, getFeed } from '../../../lib/rss'
+import { FEEDS } from '../../../lib/constants'
 import PostContent from "../../../components/postContent";
 import PostCard from "../../../components/postCard";
 import { notFound } from 'next/navigation'
+import { LATEST_POSTS_LIMIT } from "@/lib/constants";
 
 export const revalidate = 60 // revalidate all feed data every minute
 
@@ -51,9 +53,9 @@ export default async function Post ({ params }: Params) {
             {currentPost && <PostContent post={currentPost}></PostContent>}
         </div>
             <div className='block'>
-                <div className="text-2xl font-bold">More from {feed.title}</div>
+                <div className="text-2xl font-bold">Latest from {feed.title}</div>
                 {
-                    otherPostsFromSameFeed.map((post: Item, index: number) => {
+                    otherPostsFromSameFeed.slice(0, LATEST_POSTS_LIMIT).map((post: Item, index: number) => {
                         return <PostCard
                                     post={post}
                                     renderContent={feed.renderContent}

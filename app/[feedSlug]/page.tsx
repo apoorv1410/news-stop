@@ -1,4 +1,5 @@
-import { FEEDS, getFeed } from "../../lib/rss";
+import { getFeed } from "../../lib/rss";
+import { FEEDS } from "../../lib/constants";
 import PostCard from "../../components/postCard";
 import { notFound } from 'next/navigation'
 
