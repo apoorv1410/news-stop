@@ -33,3 +33,4 @@ Open [http://localhost:5000](http://localhost:5000) with your browser to see the
 ## Roadmap
 
 - Enable `Text-to-Speech` fetaure with huggingface models
+- Add service worker to supprt offline PWA feature
