@@ -1,0 +1,23 @@
+{
+    "name": "NewsStop",
+    "version": "1.0.1",
+    "short_name": "NewsStop",
+    "icons": [
+      {
+        "src": "/static/favicon/android-chrome-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/static/favicon/android-chrome-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ],
+    "description": "Your one stop for news around the world 🌎",
+    "theme_color": "#F3DFC1",
+    "lang": "en",
+    "background_color": "#F3DFC1",
+    "display": "standalone",
+    "start_url": "/?utm_source=pwa&utm_medium=pwa"
+}

@@ -2,11 +2,6 @@ import { FEEDS } from "../lib/rss";
 import Link from "next/link";
 import "../styles/globals.css";
 
-type Props = {
-  Component: any,
-  pageProps: any
-}
-
 export const revalidate = 60 // revalidate all feed data every minute
 
 export default function NewsStop () {

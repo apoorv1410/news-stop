@@ -89,7 +89,7 @@ export const getAllPosts = cache(async () => {
     // loop through each feed source and save posts array of each feed in posts
     posts = await Promise.all(FEEDS.map(async (currentFeed) => {
         const currentFeedData = await getFeed(currentFeed.url, currentFeed.slug);
-        const feedPosts = currentFeedData.map((feed) => ({ feedSlug: feed.feedSlug || '', postSlug: feed.postSlug || ''}))
+        const feedPosts = currentFeedData.slice(0, 5).map((feed) => ({ feedSlug: feed.feedSlug || '', postSlug: feed.postSlug || ''}))
         return feedPosts
     }))
 
