@@ -44,19 +44,23 @@ export default async function Post ({ params }: Params) {
     const otherPostsFromSameFeed: any = detailedFeed.filter((item) => item.itemURL !== fullSlug) || [];
 
   return (
-      <div className="max-w-2xl mx-auto px-4">
-          {currentPost && <PostContent post={currentPost}></PostContent>}
-          <div className="text-2xl font-bold">More from {feed.title}</div>
-          {
-              otherPostsFromSameFeed.map((post: Item, index: number) => {
-                  return <PostCard
-                            post={post}
-                            renderContent={feed.renderContent}
-                            key={index}
-                          >
-                          </PostCard>
-              })
-          }
+      <div className="md:flex gap-x-12 max-w-5xl mx-auto md:mr-[10%] px-4 pb-4">
+        <div className="min-w-[60%]">
+            {currentPost && <PostContent post={currentPost}></PostContent>}
+        </div>
+            <div className='block'>
+                <div className="text-2xl font-bold">More from {feed.title}</div>
+                {
+                    otherPostsFromSameFeed.map((post: Item, index: number) => {
+                        return <PostCard
+                                    post={post}
+                                    renderContent={feed.renderContent}
+                                    key={index}
+                                >
+                                </PostCard>
+                    })
+                }
+            </div>
       </div>
   )
 }

@@ -39,7 +39,7 @@ export default async function Feed ({ params }: Params) {
   const posts: any = detailedFeed
   return (
     <>
-      <div className="px-4 py-1 max-w-2xl mx-auto">
+      <div className="px-4 pb-4 max-w-2xl mx-auto">
           <h1 className="font-bold text-3xl mb-4">{feed.title}</h1>
           <div className="space-y-4">
             {
