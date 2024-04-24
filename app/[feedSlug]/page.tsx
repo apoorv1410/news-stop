@@ -8,7 +8,7 @@ export const revalidate = 60 // revalidate all feed data every minute
 // get list of feed paths
 export const generateStaticParams = async () => {
   return FEEDS.map((post) => ({
-    feedSlug: post.slug,
+    feedSlug: post.slug
   }))
 }
 
@@ -36,7 +36,7 @@ export default async function Feed ({ params }: Params) {
     return notFound();
   }
   const detailedFeed = await getFeed(feed.url, feed.slug);
-  const posts: any = detailedFeed
+  const posts: Array<any> = detailedFeed
   return (
     <>
       <div className="px-4 pb-4 max-w-2xl mx-auto">

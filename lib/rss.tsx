@@ -57,7 +57,8 @@ export const getFeed = cache(async (feedUrl: string, feedSlug: string) => {
     feed.items.forEach(async (item, index) => {
         item.itemURL = '/' + feedSlug + '/' + convertHeadingToUrl((item.title || ''));
         item.postSlug = convertHeadingToUrl((item.title || ''));
-        item.feedSlug = feedSlug
+        item.feedSlug = feedSlug;
+        item.fullContent = item['content:encoded'] ? item['content:encoded'] : item.content
 
         // check if current post item should be processed with huggingface summarization feature.
         // This is to save tokens on limited access plans
@@ -65,8 +66,8 @@ export const getFeed = cache(async (feedUrl: string, feedSlug: string) => {
         // post is being rendered in production environment AND
         // current post item is in top HF_LIMIT count AND
         // current post has more than HF_SUMMARY_MIN_FULL_TEXT_WORD_SIZE content words to be summarized
-        const isCurrentItemValidForHFSummary = process.env.NODE_ENV === 'production' && index < (parseInt(process.env.HF_LIMIT!) || 5) && getWordCount(item.content!) > (parseInt(process.env.HF_SUMMARY_MIN_FULL_TEXT_WORD_SIZE!) || 100)
-        item.summary = isCurrentItemValidForHFSummary ? await getTextSummary(item.content || ''): '';
+        const isCurrentItemValidForHFSummary = process.env.NODE_ENV === 'production' && index < (parseInt(process.env.HF_LIMIT!) || 5) && getWordCount(item.fullContent) > (parseInt(process.env.HF_SUMMARY_MIN_FULL_TEXT_WORD_SIZE!) || 100)
+        item.summary = isCurrentItemValidForHFSummary ? await getTextSummary(item.fullContent || item.content) : '';
 
         // check if current post item should be processed with huggingface text-to-speech feature.
         // This is to save tokens on limited access plans
@@ -89,7 +90,7 @@ export const getAllPosts = cache(async () => {
     // loop through each feed source and save posts array of each feed in posts
     posts = await Promise.all(FEEDS.map(async (currentFeed) => {
         const currentFeedData = await getFeed(currentFeed.url, currentFeed.slug);
-        const feedPosts = currentFeedData.slice(0, 5).map((feed) => ({ feedSlug: feed.feedSlug || '', postSlug: feed.postSlug || ''}))
+        const feedPosts = currentFeedData.map((feed) => ({ feedSlug: feed.feedSlug || '', postSlug: feed.postSlug || '', summary: feed.summary, index: feed.index}))
         return feedPosts
     }))
 

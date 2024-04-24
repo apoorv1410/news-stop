@@ -11,7 +11,7 @@ type Props = {
         isoDate: string,
         creator: string | null,
         content: string,
-        'content:encoded': string,
+        fullContent: string,
         summary: string,
         audioSource: string
     }
@@ -41,7 +41,7 @@ export default function PostContent({ post }: Props) {
             {post.audioSource && <audio src={post.audioSource} id="speech" controls />}
             {post.summary && <PostSummary summary={post.summary}></PostSummary>}
             <div
-                dangerouslySetInnerHTML={{ __html: post['content:encoded'] ? post['content:encoded'] : post.content }}
+                dangerouslySetInnerHTML={{ __html: post.fullContent }}
             />
         </article>
     </>

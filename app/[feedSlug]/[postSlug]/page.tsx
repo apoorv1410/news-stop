@@ -9,7 +9,9 @@ export const revalidate = 60 // revalidate all feed data every minute
 // get list of post paths
 export const generateStaticParams = async () => {
     const posts  = await getAllPosts();
-    return posts.map((post) => ({
+    // limit the pre-rendered post count to reduce build time
+    const postLimit = parseInt(process.env.BUILD_POST_LIMIT!) || 5
+    return posts.slice(0, postLimit).map((post) => ({
         postSlug: post.postSlug,
         feedSlug: post.feedSlug
     }))
