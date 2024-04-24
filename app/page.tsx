@@ -9,7 +9,7 @@ export default function NewsStop () {
     <div>
         <div className="px-4 py-1 max-w-2xl mx-auto">
             <h1 className="font-bold text-5xl mb-12">News Stop</h1>
-            <h1 className="text-2xl mb-12">Your one stop for news around the world 🌎</h1>
+            <h2 className="mb-12">Your one stop for news around the world 🌎</h2>
             <div className="grid grid-cols-2 gap-4">
                 {
                     FEEDS.map((feed) => (

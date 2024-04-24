@@ -6,6 +6,10 @@ p, hr, li {
     @apply my-3;
 }
 
+h1,h2,h3 {
+    line-height: normal !important
+}
+
 h3 {
     @apply text-xl font-bold py-1;
 }

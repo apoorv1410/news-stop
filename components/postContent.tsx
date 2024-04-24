@@ -32,12 +32,12 @@ export default function PostContent({ post }: Props) {
                 />
             </Head>
 
-            <div className="text-3xl font-bold">
+            <h1 aria-label={post.title} className="font-bold p-0">
                 {post.title}
-            </div>
-            <div className="mb-6 text-base">
+            </h1>
+            <h2 className="mb-6 font-normal text-base">
                 Posted On <Date dateString={post.isoDate} /> {post.creator && `| From ${post.creator}`}
-            </div>
+            </h2>
             {post.audioSource && <audio src={post.audioSource} id="speech" controls />}
             {post.summary && <PostSummary summary={post.summary}></PostSummary>}
             <div
