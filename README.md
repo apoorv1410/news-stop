@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# NewsStop - Fetch Latest News from Popolur RSS Feeds
+- This is a feed reader built with NextJS to fetch the latest news from [Inc42](https://inc42.com/feed/) and [Google News](https://news.google.com/rss?hl=en-IN&gl=IN&ceid=IN:en) feeds
+- Live [Demo](https://news-stop-tau.vercel.app/)
 
-## Getting Started
+## Dependencies:
+- `NextJS`: for project base
+- `rss-parser`: for parsing the RSS feed
+- `tailwind` & `Next-UI` for CSS framework
+- `date-fns`: for date-time parsing
+- `huggingface/inference`: for AI content generation models
 
-First, run the development server:
+## Setup on Local
+
+Setup the project in `dev` or `production` mode :
 
 ```bash
 npm run dev
 # or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run build && npm run start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:5000](http://localhost:5000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Overview
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- This website fetches the RSS feed and displays beautifully with the help of `Tailwind` and `Next-UI` frameworks
+- In addition to feed data, `Text-Summarization` by huggingface models is enabled for longer articles
+- `SSG` (Server Side Generation) is enabled for the website performace optimization, so the pages are rendered at build time and served to the client pre-rendered
+- Font optimization is done by `next-font` with custom open source Google fonts
+- Security headers added in next-config to prevent XSS attacks
+- Deployed to [Vercel](https://news-stop-tau.vercel.app/) with env secrets
 
-## Learn More
+## Roadmap
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Enable `Text-to-Speech` fetaure with huggingface models
